@@ -6,6 +6,7 @@ const int PIN_IN4 = 5; // Speed for Motor2
 
 // Settings:
 const int ACCEL_DELAY = 0; // Modifies the delay between speed changes (0 = instant change in speed)
+const int TURN_SPEED = 255; //speed turns are made.
 
 // Globals:
 int leftSpeed  = 0; // Current speed of left motor (range: -255 to 255)
@@ -86,4 +87,20 @@ void move(int lSpeed, int rSpeed)
     digitalWrite(PIN_IN3, LOW);
     digitalWrite(PIN_IN4, LOW);
   }
+}
+
+void turnRight(int timeInMilliSecs, int speedAsInt)
+{
+  //this method's job is to turn the robot to the right 
+  //for the given number of seconds at the given speed.
+  move(speedAsInt, 0-speedAsInt); //turn left wheel forward and the right one back!
+  delay(timeInMilliSecs);
+}
+
+void turnRight(int timeInMilliSecs, int speedAsInt)
+{
+  //this method's job is to turn the robot to the left 
+  //for the given number of seconds at the given speed.
+  move(speedAsInt, 0-speedAsInt); //turn right wheel forward and the left one back!
+  delay(timeInMilliSecs);
 }
