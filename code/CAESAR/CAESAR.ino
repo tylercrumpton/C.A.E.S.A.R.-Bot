@@ -12,8 +12,9 @@ void setup()
 {
   firstTimeThrough = true;
   serialSetup();
-  rfSetup();
+//  rfSetup();
   motorSetup();
+  calibrateLineSensor();
 }
 
 void loop()
@@ -24,11 +25,14 @@ void loop()
   //Ready timer 5 seconds THE FIRST TIME IN THE LOOP!
   if(firstTimeThrough)
   {
+    Serial.println("Waiting...");
     firstTimeThrough = false;
     delay(5000);
+    Serial.println("Go!");
   }
   
   //now start looking around
+  Serial.print("Driving forward, ");
   driveForward();
   
   //if edge found then turn 30 degrees and continue searching
@@ -68,9 +72,13 @@ void checkForEdge()
   boolean botDetected = checkForOpponent();
   if(edgeDetected && !botDetected)
   {
+    Serial.println("Found edge! Turning around.");
     turnRight(400, MAXIMUM_SPEED);     
   }
-  
+  else
+  {
+    Serial.println("No edge was found.");
+  }
 }
 
 boolean checkForOpponent()
@@ -82,10 +90,12 @@ boolean checkForOpponent()
   if(sonarDist <= SEARCH_DISTANCE)
   {
      //something was found!
+     Serial.println("ENEMY DETECTED!");
      return true;
   }
   else
   {
+    Serial.println("no enemies sighted.");
     return false;
   }
 }

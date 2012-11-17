@@ -97,10 +97,10 @@ void turnRight(int timeInMilliSecs, int speedAsInt)
   delay(timeInMilliSecs);
 }
 
-void turnRight(int timeInMilliSecs, int speedAsInt)
+void turnLeft(int timeInMilliSecs, int speedAsInt)
 {
   //this method's job is to turn the robot to the left 
   //for the given number of seconds at the given speed.
-  move(speedAsInt, 0-speedAsInt); //turn right wheel forward and the left one back!
+  move(0-speedAsInt, speedAsInt); //turn right wheel forward and the left one back!
   delay(timeInMilliSecs);
 }
