@@ -28,7 +28,7 @@ void motorSetup()
   
 }
 
-// Performs are "hard" stop by ignoring acceleration values.
+// Performs a "hard" stop by ignoring acceleration values.
 void brake()
 {
   // Set both motor speeds to zero:
@@ -50,11 +50,20 @@ void move(int lSpeed, int rSpeed)
   leftSpeed = constrain(lSpeed, -255, 255);
   rightSpeed = constrain(rSpeed, -255, 255);
   
+  // NOTE: Temporary direction fix:
+  leftSpeed = 0-leftSpeed;
+  rightSpeed = 0-rightSpeed;
+  
+  //Serial.print("L: ");
+  //Serial.print(leftSpeed);
+  //Serial.print("   R: ");
+  //Serial.println(rightSpeed);
+  
   // Case where left speed is negative (backwards):
   if(leftSpeed < 0)
   {
     digitalWrite(PIN_IN1, HIGH); // Set direction to backwards.
-    analogWrite(PIN_IN2, -leftSpeed); // Set backwards speed.
+    analogWrite(PIN_IN2, 255+leftSpeed); // Set backwards speed.
   }
   // Case where left speed is negative (backwards):
   else if(leftSpeed > 0)
@@ -73,7 +82,7 @@ void move(int lSpeed, int rSpeed)
   if(rightSpeed < 0)
   {
     digitalWrite(PIN_IN3, HIGH); // Set direction to backwards.
-    analogWrite(PIN_IN4, -rightSpeed); // Set backwards speed.
+    analogWrite(PIN_IN4, 255+rightSpeed); // Set backwards speed.
   }
   // Case where right speed is negative (backwards):
   else if(rightSpeed > 0)
