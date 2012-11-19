@@ -6,7 +6,7 @@ const int PIN_IN4 = 5; // Speed for Motor2
 
 // Settings:
 const int ACCEL_DELAY = 0; // Modifies the delay between speed changes (0 = instant change in speed)
-const int TURN_SPEED = 255; //speed turns are made.
+const int MOTOR_SPEED_OFFSET = 0; //difference in phystical motor speeds
 
 // Globals:
 int leftSpeed  = 0; // Current speed of left motor (range: -255 to 255)
@@ -112,4 +112,12 @@ void turnLeft(int timeInMilliSecs, int speedAsInt)
   //for the given number of seconds at the given speed.
   move(0-speedAsInt, speedAsInt); //turn right wheel forward and the left one back!
   delay(timeInMilliSecs);
+}
+
+void moveForward(int speedAsInt)
+{
+  //this method will move both motors forward at the given speed taking into
+  //account the motor speed offset.  Some motors move faster than others given
+  // the same speed number so this offset will make them run the same.
+  move(speedAsInt, speedAsInt-MOTOR_SPEED_OFFSET);
 }

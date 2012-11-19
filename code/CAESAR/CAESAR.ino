@@ -4,9 +4,12 @@
 // waits 5 seconds the first time through.
 boolean firstTimeThrough;
 
-const int NORMAL_SPEED = 100; //forward speed while searching
-const int MAXIMUM_SPEED = 250; //full speed while attacking!
+const int NORMAL_SPEED = 75; //forward speed while searching
+const int MAXIMUM_SPEED = 75; //full speed while attacking!
 const int SEARCH_DISTANCE = 50; //sonar dist. usually in cm.
+const int TURN_SPEED = 75; //speed turns are made.
+
+unsigned int sensorValues[1];
 
 void setup()
 {
@@ -15,6 +18,11 @@ void setup()
 //  rfSetup();
   motorSetup();
   calibrateLineSensor();
+<<<<<<< HEAD
+=======
+  pinMode(A0, OUTPUT);
+  digitalWrite(A0, LOW);
+>>>>>>> Changes made at TEDxYouth
 }
 
 void loop()
@@ -30,6 +38,9 @@ void loop()
     delay(5000);
     Serial.println("Go!");
   }
+  
+  Serial.print("line sensor value: ");
+  Serial.println(sensorValues[0]);
   
   //now start looking around
   Serial.print("Driving forward, ");
@@ -51,14 +62,14 @@ void loop()
 void driveForward()
 {
   //this method makes the bot drive forward a normal speed while looking around.
-  move(NORMAL_SPEED, NORMAL_SPEED); 
+  moveForward(NORMAL_SPEED);
 }
 
 void driveForwardFast()
 {
   //this method will start the motors turning forward "fast".
   //"fast" is defined as some maximum speed we determine.
-  move(MAXIMUM_SPEED, MAXIMUM_SPEED);
+  moveForward(MAXIMUM_SPEED);
 }
 
 void checkForEdge()
@@ -69,16 +80,30 @@ void checkForEdge()
   // that's taken care of there.
   //UNLESS the sonar picked up something then don't turn!
   boolean edgeDetected = getEdgeDetect();
-  boolean botDetected = checkForOpponent();
+  //boolean botDetected = checkForOpponent();
+  boolean botDetected = false; //disable for now.
   if(edgeDetected && !botDetected)
   {
     Serial.println("Found edge! Turning around.");
+<<<<<<< HEAD
     turnRight(400, MAXIMUM_SPEED);     
   }
   else
   {
     Serial.println("No edge was found.");
   }
+=======
+    brake(); //stop
+    delay(1000); //wait 1 sec
+    move(0-MAXIMUM_SPEED, 0-MAXIMUM_SPEED); //back up fast
+    delay(500); //wait half a sec
+    turnRight(400, TURN_SPEED);  //turn right a little bit   
+  }
+  else
+  {
+    Serial.println("No edge was found. OR enemy was detected!");
+  }
+>>>>>>> Changes made at TEDxYouth
 }
 
 boolean checkForOpponent()
