@@ -18,11 +18,8 @@ void setup()
 //  rfSetup();
   motorSetup();
   calibrateLineSensor();
-<<<<<<< HEAD
-=======
   pinMode(A0, OUTPUT);
   digitalWrite(A0, LOW);
->>>>>>> Changes made at TEDxYouth
 }
 
 void loop()
@@ -85,14 +82,6 @@ void checkForEdge()
   if(edgeDetected && !botDetected)
   {
     Serial.println("Found edge! Turning around.");
-<<<<<<< HEAD
-    turnRight(400, MAXIMUM_SPEED);     
-  }
-  else
-  {
-    Serial.println("No edge was found.");
-  }
-=======
     brake(); //stop
     delay(1000); //wait 1 sec
     move(0-MAXIMUM_SPEED, 0-MAXIMUM_SPEED); //back up fast
@@ -103,7 +92,6 @@ void checkForEdge()
   {
     Serial.println("No edge was found. OR enemy was detected!");
   }
->>>>>>> Changes made at TEDxYouth
 }
 
 boolean checkForOpponent()

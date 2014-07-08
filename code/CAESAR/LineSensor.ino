@@ -3,17 +3,10 @@
 #define LINE_SENSOR_PIN 6
 #define NUM_SENSORS     1     // number of sensors used
 #define TIMEOUT         2500  // waits for 2500 us for sensor outputs to go low
-<<<<<<< HEAD
-#define LINE_THRESHOLD  500   // value out of 1000 that defines the "line"
 
-PololuQTRSensorsRC qtrrc((unsigned char[]) {6}, NUM_SENSORS, TIMEOUT); 
-unsigned int sensorValues[NUM_SENSORS];
-=======
 #define LINE_THRESHOLD  700   // value out of 1000 that defines the "line"
 
 PololuQTRSensorsRC qtrrc((unsigned char[]) {6}, NUM_SENSORS, TIMEOUT); 
-
->>>>>>> Changes made at TEDxYouth
 
 void calibrateLineSensor()
 {
@@ -28,17 +21,10 @@ void calibrateLineSensor()
 boolean getEdgeDetect()
 {
   qtrrc.readCalibrated(sensorValues, 1);
-<<<<<<< HEAD
-  if (sensorValues[0] > LINE_THRESHOLD)
-=======
   if (sensorValues[0] < LINE_THRESHOLD)
->>>>>>> Changes made at TEDxYouth
   {
     return true;
   }
   return false;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Changes made at TEDxYouth
+
