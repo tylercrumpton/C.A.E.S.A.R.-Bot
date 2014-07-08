@@ -1,4 +1,5 @@
 #define MESSAGE_LENGTH 7
+#define USE_SONAR 0
 
 //this flag is to make sure the bot
 // waits 5 seconds the first time through.
@@ -48,11 +49,13 @@ void loop()
   
   //look left and right for opponent??
   
+#if USE_SONAR == 1
   //if opponent found go after them!
   if(checkForOpponent())
   {
     driveForwardFast(); 
   }
+#endif
   
 } //end loop()
 

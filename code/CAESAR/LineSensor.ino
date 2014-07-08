@@ -25,6 +25,9 @@ boolean getEdgeDetect()
   {
     return true;
   }
-  return false;
+  else
+  {
+    return false;
+  }
 }
 
