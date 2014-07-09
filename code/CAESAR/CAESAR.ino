@@ -1,10 +1,6 @@
 #define MESSAGE_LENGTH 7
 #define USE_SONAR 0
 
-//this flag is to make sure the bot
-// waits 5 seconds the first time through.
-boolean firstTimeThrough;
-
 const int NORMAL_SPEED = 75; //forward speed while searching
 const int MAXIMUM_SPEED = 75; //full speed while attacking!
 const int SEARCH_DISTANCE = 50; //sonar dist. usually in cm.
@@ -16,29 +12,23 @@ void setup()
 {
   firstTimeThrough = true;
   serialSetup();
-//  rfSetup();
+//rfSetup();
   motorSetup();
   calibrateLineSensor();
   pinMode(A0, OUTPUT);
   digitalWrite(A0, LOW);
+  
+  //Ready timer 5 seconds THE FIRST TIME IN THE LOOP!
+  Serial.println("Waiting...");
+  firstTimeThrough = false;
+  delay(5000);
+  Serial.println("Go!");
 }
 
 void loop()
 {
   //readSerial();
   //readRF();
-  
-  //Ready timer 5 seconds THE FIRST TIME IN THE LOOP!
-  if(firstTimeThrough)
-  {
-    Serial.println("Waiting...");
-    firstTimeThrough = false;
-    delay(5000);
-    Serial.println("Go!");
-  }
-  
-  Serial.print("line sensor value: ");
-  Serial.println(sensorValues[0]);
   
   //now start looking around
   Serial.print("Driving forward, ");
@@ -48,7 +38,6 @@ void loop()
   checkForEdge();
   
   //look left and right for opponent??
-  
 #if USE_SONAR == 1
   //if opponent found go after them!
   if(checkForOpponent())
@@ -56,6 +45,9 @@ void loop()
     driveForwardFast(); 
   }
 #endif
+
+  Serial.print("Line sensor value: ");
+  Serial.println(sensorValues[0]);
   
 } //end loop()
 
