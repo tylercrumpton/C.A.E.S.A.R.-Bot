@@ -1,5 +1,5 @@
 #define MESSAGE_LENGTH 7
-#define USE_SONAR 0
+#define USE_SONAR 0 //Set to 1 if the sonar is to be used, else 0
 
 const int NORMAL_SPEED = 75; //forward speed while searching
 const int MAXIMUM_SPEED = 75; //full speed while attacking!
@@ -10,7 +10,6 @@ unsigned int sensorValues[1];
 
 void setup()
 {
-  firstTimeThrough = true;
   serialSetup();
 //rfSetup();
   motorSetup();
@@ -20,60 +19,54 @@ void setup()
   
   //Ready timer 5 seconds THE FIRST TIME IN THE LOOP!
   Serial.println("Waiting...");
-  firstTimeThrough = false;
   delay(5000);
   Serial.println("Go!");
 }
 
 void loop()
 {
+  // Read any commands from the serial buffer
   //readSerial();
+  
+  // Read any commands from the RF buffer
   //readRF();
   
-  //now start looking around
+  // Begin moving forward
   Serial.print("Driving forward, ");
   driveForward();
   
-  //if edge found then turn 30 degrees and continue searching
+  // If edge is found then turn about 30 degrees and continue 
   checkForEdge();
   
-  //look left and right for opponent??
-#if USE_SONAR == 1
-  //if opponent found go after them!
+  // If opponent is visible go after them!
   if(checkForOpponent())
   {
     driveForwardFast(); 
   }
-#endif
 
   Serial.print("Line sensor value: ");
   Serial.println(sensorValues[0]);
-  
-} //end loop()
+}
 
+//Sets the current drive speed to "normal speed, forward"
 void driveForward()
 {
-  //this method makes the bot drive forward a normal speed while looking around.
   moveForward(NORMAL_SPEED);
 }
 
+//Sets the current drive speed to "max speed, forward"
 void driveForwardFast()
 {
-  //this method will start the motors turning forward "fast".
-  //"fast" is defined as some maximum speed we determine.
   moveForward(MAXIMUM_SPEED);
 }
 
+//Checks for the white ring by reading the line sensors. If 
+//found, it will turn around a certain amount then continue,
+//UNLESS the sonar picked up something - then don't turn!
 void checkForEdge()
 {
-  //this method will check the edge sensors for the white edge.
-  //if found it will turn around the pre-set amount then exit.
-  //the first method called in the loop is to drive foward so
-  // that's taken care of there.
-  //UNLESS the sonar picked up something then don't turn!
   boolean edgeDetected = getEdgeDetect();
-  //boolean botDetected = checkForOpponent();
-  boolean botDetected = false; //disable for now.
+  boolean botDetected = checkForOpponent();
   if(edgeDetected && !botDetected)
   {
     Serial.println("Found edge! Turning around.");
@@ -89,21 +82,20 @@ void checkForEdge()
   }
 }
 
+//Checks for any object detected by the sonar sensor within 
+//a certain distance. It will return true if it finds 
+//something.
 boolean checkForOpponent()
 {
-  //this method will check for any object the sonar picks up
-  //within the given distance.  It will then return true if
-  // it finds something!
+  bool result = false;
+#if USE_SONAR == 1
   int sonarDist = getSonarDist();
   if(sonarDist <= SEARCH_DISTANCE)
   {
      //something was found!
      Serial.println("ENEMY DETECTED!");
-     return true;
+     result = true;
   }
-  else
-  {
-    Serial.println("no enemies sighted.");
-    return false;
-  }
+#endif // #if USE_SONAR == 1
+  return result;
 }
